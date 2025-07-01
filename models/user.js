@@ -11,6 +11,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      // One-to-Many
+      User.hasMany(models.Post, {
+        foreignKey: 'userId',
+        as: 'posts'
+      });
+
+      // One-to-One
+      User.hasOne(models.Profile, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE'
+      });
     }
   }
   User.init({
@@ -18,10 +29,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,            
       validate: {
-        notEmpty: true,            
-        len: [2, 50]               
-      }
-    },
+        notNull: {msg: 'First name is required'},            
+        len: {
+          args: [3, 50],
+          msg: 'Enter valid name'              
+        }
+    }},
     lastName: {
       type: DataTypes.STRING,
       allowNull: true             
@@ -31,9 +44,49 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,            
       unique: true,               
       validate: {
-        isEmail: true              
+        isEmail: {msg: 'invalid mail'}              
+      }
+    },
+    dob: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+      validate: {
+        isDate: {msg: 'Invalid date'}
+      }
+    },
+    phone: {
+      type: DataTypes.BIGINT,
+      allowNull: true,
+      validate: {
+        len: {
+          args: [10,10],
+          msg: 'enter 10 digits'
+        }
+      }
+    },
+    aadhar: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        is: {
+          args: /^\d{12}$/,
+          msg: 'Aadhar must be 12 digits'
+        }
+      }
+    },
+    pancard: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        is: {
+          args: /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/,
+          msg: 'Invalid PAN'
+        }
       }
     }
+
   }, {
     sequelize,
     modelName: 'User',
