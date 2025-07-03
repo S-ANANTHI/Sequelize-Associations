@@ -54,11 +54,6 @@ exports.getBetweenCreatedBy = async (start, end) => {
     createdAt: { [Op.between]: [start, end] } } });
 };
 
-exports.getBetweenCreatedBy = async (start, end) => {
-  return await Post.findAll({ where: { 
-    createdAt: { [Op.between]: [start, end] } } });
-};
-
 exports.getByKeyword = async (keyword) => {
   return await Post.findAll({
     where: {
