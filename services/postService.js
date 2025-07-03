@@ -65,7 +65,7 @@ exports.getByUserOrTitle = async ({ userId, titleKeyword }) => {
   return await Post.findAll({
     where: {
       [Op.or]: [
-        { userId },
+        { userId: userId },
         { title: { [Op.like]: `%${titleKeyword}%` } }
       ]
     }
