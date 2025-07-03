@@ -48,6 +48,50 @@ exports.getPostsByUser = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.getPostsGreaterthanId = async(req,res)=>{
+  const rec = await postService.getPostsGreaterthanId(req.params.id);
+  try{
+    res.json(rec);
+  } catch(err){
+    res.status(500).json({ error: err.message });
+  }
+  
+};
+exports.getBetweenCreatedBy =  async (req, res) => {
+  try {
+    const { start, end } = req.query;
+    const posts = await postService.getBetweenCreatedBy(start, end);
+    res.json(posts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+exports.getByKeyword = async (req, res) => {
+  try {
+    const posts = await postService.getByKeyword(req.body.keyword);
+    res.json(posts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+exports.getByUserOrTitle = async (req, res) => {
+  try {
+    const posts = await postService.getByUserOrTitle(req.body);
+    res.json(posts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getByIdIn = async (req, res) => {
+  try {
+    const posts = await postService.getByIdIn(req.body.ids);
+    res.json(posts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 exports.updatePost = async (req, res) => {
   try {
     const updatedPost = await postService.updatePost(req.params.id, req.body);

@@ -1,3 +1,5 @@
+const { Op } = require('sequelize');
+
 const db = require('../models');
 const Post = db.Post;
 
@@ -40,4 +42,44 @@ exports.linkTagsToPost = async (postId, tagIds) => {
   if (!post) throw new Error('Post not found');
   await post.setTags(tagIds);  
   return post;
+};
+
+exports.getPostsGreaterthanId = async (id) => {
+  return await Post.findAll({ where: { 
+    Id: { [Op.gte]:id } } });
+};
+
+exports.getBetweenCreatedBy = async (start, end) => {
+  return await Post.findAll({ where: { 
+    createdAt: { [Op.between]: [start, end] } } });
+};
+
+exports.getBetweenCreatedBy = async (start, end) => {
+  return await Post.findAll({ where: { 
+    createdAt: { [Op.between]: [start, end] } } });
+};
+
+exports.getByKeyword = async (keyword) => {
+  return await Post.findAll({
+    where: {
+      title: { [Op.like]: `%${keyword}%` }
+    }
+  });
+};
+exports.getByUserOrTitle = async ({ userId, titleKeyword }) => {
+  return await Post.findAll({
+    where: {
+      [Op.or]: [
+        { userId },
+        { title: { [Op.like]: `%${titleKeyword}%` } }
+      ]
+    }
+  });
+};
+exports.getByIdIn = async (ids) => {
+  return await Post.findAll({
+    where: {
+      id: { [Op.in]: ids }
+    }
+  });
 };

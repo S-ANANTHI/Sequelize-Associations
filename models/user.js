@@ -55,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     phone: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING,
       allowNull: true,
       validate: {
         len: {
